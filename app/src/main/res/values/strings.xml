@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FlickrClient</string>
+    <string name="search_query">Поисковой запрос</string>
+    <string name="no_images">Нет изображений</string>
+    <string name="now_you_are_authorized">Теперь вы авторизованы и можете начать пользоваться приложением!\nВведите поисковой запрос.</string>
+    <string name="image_in_list">Картинка в списке</string>
+    <string name="selected_image">Выбранная картинка</string>
+    <string name="open_db">Открыть БД</string>
+</resources>
