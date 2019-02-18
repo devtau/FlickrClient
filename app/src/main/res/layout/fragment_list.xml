@@ -6,15 +6,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <AutoCompleteTextView
-        android:id="@+id/searchView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_half"
         android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal"
-        android:drawableRight="@android:drawable/ic_menu_search"
-        android:hint="@string/search_query"/>
+        android:layout_marginRight="@dimen/margin_normal">
+
+        <Button
+            android:id="@+id/authorize"
+            android:text="@string/authorize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@android:drawable/ic_menu_search"
+            android:hint="@string/search_query"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"/>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

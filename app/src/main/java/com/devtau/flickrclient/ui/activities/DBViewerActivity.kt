@@ -31,8 +31,8 @@ import android.widget.TableRow.LayoutParams
 import android.widget.TextView
 import android.widget.Toast
 import com.devtau.database.SQLHelper
+import com.devtau.flickrclient.BuildConfig
 import com.devtau.flickrclient.R
-import com.devtau.flickrclient.util.AppUtils
 import com.devtau.rest.util.Logger
 
 @Suppress("NAME_SHADOWING", "SetTextI18n", "ResourceType")
@@ -59,7 +59,7 @@ class DBViewerActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dbm = SQLHelper.getInstance(this, AppUtils.DATABASE_NAME)
+        dbm = SQLHelper.getInstance(this, BuildConfig.DATABASE_NAME)
 
         val mainScrollView = ScrollView(this)
         //the main linear layout to which all tables spinners etc will be added

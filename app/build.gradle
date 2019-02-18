@@ -19,6 +19,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "FLICKR_API_KEY", "\"4ead60d4df777c9cde59b829c70b5469\""
+        buildConfigField "String", "DATABASE_NAME", "\"FlickrClientDB\""
     }
     buildTypes {
         release {

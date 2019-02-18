@@ -81,6 +81,11 @@ class FragmentsCoordinatorImpl(private val fragmentManager: FragmentManager): Fr
         }
     }
 
+    override fun updateSearchVisibility() {
+        val listFragment = fragmentManager.findFragmentByTag(ListFragment.FRAGMENT_TAG) as ListFragment?
+        listFragment?.updateSearchVisibility()
+    }
+
 
     companion object {
         private const val LOG_TAG = "FragmentsCoordinatorImpl"

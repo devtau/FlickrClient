@@ -7,16 +7,20 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import com.devtau.database.DBSubscriberFragment
 import com.devtau.database.listeners.ImagesListener
 import com.devtau.database.listeners.LastSearchQueryListener
 import com.devtau.database.listeners.SearchHistoryListener
+import com.devtau.flickrclient.BuildConfig
 import com.devtau.flickrclient.CustomGridLayoutManager
 import com.devtau.flickrclient.ImagesAdapter
 import com.devtau.flickrclient.R
 import com.devtau.flickrclient.util.AppUtils
+import com.devtau.flickrclient.util.PreferencesManager
 import com.devtau.rest.model.Image
 import com.devtau.rest.util.Logger
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -30,7 +34,9 @@ class ListFragment: DBSubscriberFragment() {
     private var adapter: ImagesAdapter? = null
     private var searchViewDisposable: Disposable? = null
     private var autoCompleteStrings: List<String>? = null
+    private var prefs: PreferencesManager? = null
 
+    private var authorize: View? = null
     private var searchView: AutoCompleteTextView? = null
     private var textNoImages: View? = null
     private var recyclerView: RecyclerView? = null
@@ -44,6 +50,7 @@ class ListFragment: DBSubscriberFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = PreferencesManager.getInstance(context)
         adapter = ImagesAdapter(null, object: ImagesAdapter.Listener {
             override fun onImageSelected(image: Image, imageView: View) {
                 listener?.showDetails(image, imageView)
@@ -53,10 +60,13 @@ class ListFragment: DBSubscriberFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_list, container, false)
+        authorize = root.findViewById(R.id.authorize)
         searchView = root.findViewById(R.id.searchView)
         textNoImages = root.findViewById(R.id.textNoImages)
         recyclerView = root.findViewById(R.id.listView)
         initList(recyclerView)
+        authorize?.setOnClickListener { listener?.authorize() }
+        updateSearchVisibility()
         return root
     }
 
@@ -75,19 +85,16 @@ class ListFragment: DBSubscriberFragment() {
             .skip(1)
             .map(CharSequence::trim)
             .map(CharSequence::toString)
-            .subscribe({ value -> run {
-                if (TextUtils.isEmpty(value)) return@subscribe
-                val filtered = ArrayList<String>()
-                if (autoCompleteStrings != null)
-                    for (next in autoCompleteStrings!!)
-                        if (!TextUtils.equals(next, value) && next.startsWith(value))
-                            filtered.add(next)
-                initSearchHistoryList(filtered)
+            .subscribe(this::searchIfPossible)
+            { throwable -> Logger.e(LOG_TAG, "error in searchView subscription: " + throwable.message) }
 
-                dataSource?.saveSearchQuery(value)
-                listener?.search(value)
-            } },
-                { throwable -> Logger.e(LOG_TAG, "error in searchView subscription: " + throwable.message) })
+        searchView.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchIfPossible(v?.text?.toString())
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
 
     override fun onStop() {
@@ -95,7 +102,7 @@ class ListFragment: DBSubscriberFragment() {
         if (searchViewDisposable?.isDisposed == false) searchViewDisposable?.dispose()
     }
 
-    override fun provideDBName(): String = AppUtils.DATABASE_NAME
+    override fun provideDBName(): String = BuildConfig.DATABASE_NAME
 
     override fun restartLoaders() {
         dataSource?.getImages(object: ImagesListener {
@@ -115,6 +122,12 @@ class ListFragment: DBSubscriberFragment() {
 
     fun changeContent() {/*содержимое обновится как только в бд поступит новый список картинок*/}
 
+    fun updateSearchVisibility() {
+        val authorized = prefs?.token != null
+        authorize?.visibility = if (authorized) View.GONE else View.VISIBLE
+        searchView?.visibility = if (authorized) View.VISIBLE else View.GONE
+    }
+
 
     private fun initList(recyclerView: RecyclerView?) {
         recyclerView?.adapter = adapter
@@ -127,10 +140,24 @@ class ListFragment: DBSubscriberFragment() {
         searchView?.setAdapter(adapter)
     }
 
+    private fun searchIfPossible(query: String?) {
+        if (TextUtils.isEmpty(query)) return
+        val filtered = ArrayList<String>()
+        if (autoCompleteStrings != null)
+            for (next in autoCompleteStrings!!)
+                if (!TextUtils.equals(next, query) && next.startsWith(query!!))
+                    filtered.add(next)
+        initSearchHistoryList(filtered)
+
+        dataSource?.saveSearchQuery(query!!)
+        listener?.search(query!!)
+    }
+
 
     interface Listener {
         fun showDetails(selectedImage: Image, imageView: View)
         fun search(searchQuery: String)
+        fun authorize()
     }
 
 

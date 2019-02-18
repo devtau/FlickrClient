@@ -8,4 +8,5 @@ interface FragmentsCoordinator {
     fun showImageFragment(image: Image, imageView: View?, animateTransition: Boolean)
     fun showWebPageFragmentWithUrl(url: String?)
     fun showWebPageFragmentWithPage(page: String?)
+    fun updateSearchVisibility()
 }

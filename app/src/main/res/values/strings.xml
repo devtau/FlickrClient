@@ -6,4 +6,6 @@
     <string name="image_in_list">Картинка в списке</string>
     <string name="selected_image">Выбранная картинка</string>
     <string name="open_db">Открыть БД</string>
+    <string name="authorize">Пройти авторизацию</string>
+    <string name="no_images_found">Не найдено подходящих изображений</string>
 </resources>

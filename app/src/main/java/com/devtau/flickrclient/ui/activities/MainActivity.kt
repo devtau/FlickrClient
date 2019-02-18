@@ -15,7 +15,6 @@ import com.devtau.flickrclient.R
 import com.devtau.flickrclient.ui.RESTClientViewMain
 import com.devtau.flickrclient.ui.fragments.ListFragment
 import com.devtau.flickrclient.ui.fragments.WebPageFragment
-import com.devtau.flickrclient.util.AppUtils
 import com.devtau.flickrclient.util.PreferencesManager
 import com.devtau.rest.RESTClient
 import com.devtau.rest.RESTClientImpl
@@ -48,7 +47,7 @@ class MainActivity: AppCompatActivity(),
         fragmentsCoordinator = FragmentsCoordinatorImpl(supportFragmentManager)
         fragmentsCoordinator?.showListFragment()
         prefs = PreferencesManager.getInstance(this)
-        dataSource = DataSourceImpl(this, AppUtils.DATABASE_NAME)
+        dataSource = DataSourceImpl(this, BuildConfig.DATABASE_NAME)
         restClientView = RESTClientViewMain(this, fragmentsCoordinator, prefs, dataSource, LOG_TAG, object: RESTClientViewMain.Listener {
             override fun updateTempTokenSecret(tempTokenSecret: String) {
                 this@MainActivity.tempTokenSecret = tempTokenSecret
@@ -83,6 +82,10 @@ class MainActivity: AppCompatActivity(),
         } else {
             restClient?.search(token, tokenSecret, searchQuery, PAGE_SIZE)
         }
+    }
+
+    override fun authorize() {
+        restClient?.requestToken("")
     }
 
     override fun processUserRegistered(token: String, verifier: String) {

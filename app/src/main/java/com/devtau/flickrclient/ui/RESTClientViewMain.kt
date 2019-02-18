@@ -52,9 +52,11 @@ class RESTClientViewMain(
         prefs?.fullName = fullName
         prefs?.userNsid = userNsid
         showDialog(R.string.now_you_are_authorized)
+        fragmentsCoordinator?.updateSearchVisibility()
     }
 
     override fun processSearchResult(images: List<Image>?) {
+        if (images == null || images.isEmpty()) showDialog(R.string.no_images_found)
         if (images != null) dataSource?.saveImages(images)
     }
 

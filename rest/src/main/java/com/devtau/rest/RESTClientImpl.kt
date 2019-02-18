@@ -59,7 +59,7 @@ class RESTClientImpl(private val view: RESTClientView?): RESTClient {
         if (!checkConnection(view?.getContext())) return
         var signature: RequestSignature? = null
         try {
-            signature = RequestSignature(view?.getApiKey(), BackendAPI.REQUEST_ACCESS_TOKEN_ENDPOINT, tokenSecret, token, verifier)
+            signature = RequestSignature(view?.getApiKey(), BackendAPI.REQUEST_ACCESS_TOKEN_ENDPOINT, tokenSecret, token, null, null, verifier)
         } catch (e: UnsupportedEncodingException) {
             view?.showDialog(R.string.encoding_not_supported)
         }
