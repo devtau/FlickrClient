@@ -1,15 +1,15 @@
 package com.devtau.flickrclient
 
 import android.content.Context
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import com.devtau.rest.util.Logger
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.devtau.flickrclient.util.Logger
 /**
  * https://stackoverflow.com/questions/31759171/recyclerview-and-java-lang-indexoutofboundsexception-inconsistency-detected-in
  */
-class CustomGridLayoutManager(context: Context?, spanCount: Int): GridLayoutManager(context, spanCount) {
+class CustomGridLayoutManager(context: Context?, spanCount: Int): androidx.recyclerview.widget.GridLayoutManager(context, spanCount) {
 
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
+    override fun onLayoutChildren(recycler: androidx.recyclerview.widget.RecyclerView.Recycler?, state: androidx.recyclerview.widget.RecyclerView.State) {
         try {
             super.onLayoutChildren(recycler, state)
         } catch (e: IndexOutOfBoundsException) {

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="image_url_path_formatter" formatted="false" translatable="false">https://farm%s.static.flickr.com/%s/%s_%s.jpg</string>
-    <string name="internal_server_error">Извините, кажется у нас ошибка на сервере. Повторите запрос позже</string>
-    <string name="flickr_api_unavailable">Извините, кажется поиск Flickr сейчас недоступен. Повторите запрос позже</string>
-    <string name="signature_invalid">Ошибка подписи запроса</string>
-    <string name="you_seem_to_be_offline">Кажется, вы не подключены к сети. Попробуйте позже.</string>
-    <string name="encoding_not_supported">Ваше устройство не поддерживает нужную кодировку.</string>
-</resources>

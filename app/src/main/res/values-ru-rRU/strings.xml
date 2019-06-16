@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">FlickrClient</string>
+    <string name="search_query">Поисковой запрос</string>
+    <string name="no_images">Нет изображений</string>
+    <string name="now_you_are_authorized">Теперь вы авторизованы и можете начать пользоваться приложением!\nВведите поисковой запрос.</string>
+    <string name="image_in_list">Картинка в списке</string>
+    <string name="selected_image">Выбранная картинка</string>
+    <string name="open_db">Открыть БД</string>
+    <string name="authorize">Пройти авторизацию</string>
+    <string name="no_images_found">Не найдено подходящих изображений</string>
+
+    <string name="internal_server_error">Извините, кажется у нас ошибка на сервере. Повторите запрос позже</string>
+    <string name="flickr_api_unavailable">Извините, кажется поиск Flickr сейчас недоступен. Повторите запрос позже</string>
+    <string name="signature_invalid">Ошибка подписи запроса</string>
+    <string name="you_seem_to_be_offline">Кажется, вы не подключены к сети. Попробуйте позже.</string>
+    <string name="encoding_not_supported">Ваше устройство не поддерживает нужную кодировку.</string>
+</resources>

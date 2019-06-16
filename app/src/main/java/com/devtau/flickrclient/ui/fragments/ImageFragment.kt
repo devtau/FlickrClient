@@ -2,16 +2,16 @@ package com.devtau.flickrclient.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.support.transition.Fade
-import android.support.transition.TransitionInflater
-import android.support.v4.app.Fragment
+import androidx.transition.Fade
+import androidx.transition.TransitionInflater
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.devtau.flickrclient.*
-import com.devtau.rest.model.Image
+import com.devtau.flickrclient.rest.model.Image
 
 class ImageFragment: Fragment() {
 

@@ -1,7 +1,7 @@
 package com.devtau.flickrclient
 
 import android.view.View
-import com.devtau.rest.model.Image
+import com.devtau.flickrclient.rest.model.Image
 
 interface FragmentsCoordinator {
     fun showListFragment()

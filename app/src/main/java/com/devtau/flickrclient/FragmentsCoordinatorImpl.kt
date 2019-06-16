@@ -1,13 +1,13 @@
 package com.devtau.flickrclient
 
 import android.os.Build
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import android.view.View
 import com.devtau.flickrclient.ui.fragments.ImageFragment
-import com.devtau.flickrclient.ui.fragments.ListFragment
+import com.devtau.flickrclient.ui.fragments.listFragment.ListFragment
 import com.devtau.flickrclient.ui.fragments.WebPageFragment
-import com.devtau.rest.model.Image
-import com.devtau.rest.util.Logger
+import com.devtau.flickrclient.rest.model.Image
+import com.devtau.flickrclient.util.Logger
 
 class FragmentsCoordinatorImpl(private val fragmentManager: FragmentManager): FragmentsCoordinator {
 

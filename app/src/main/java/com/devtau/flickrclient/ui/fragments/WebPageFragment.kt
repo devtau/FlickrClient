@@ -1,20 +1,22 @@
 package com.devtau.flickrclient.ui.fragments
 
+import android.annotation.TargetApi
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import com.devtau.flickrclient.R
-import com.devtau.rest.model.RequestSignature
-import com.devtau.rest.util.NetUtils
-import com.devtau.rest.util.Logger
+import com.devtau.flickrclient.rest.model.RequestSignature
+import com.devtau.flickrclient.util.Logger
+import com.devtau.flickrclient.util.NetUtils
 
 class WebPageFragment: Fragment() {
 
@@ -49,32 +51,29 @@ class WebPageFragment: Fragment() {
         if (url == null && page == null) throw RuntimeException("url OR page. one needed")
         this.url = url
         this.page = page
-        if (url != null) webView?.loadUrl(url)
-        else if (page != null) webView?.loadData(page, "text/html; charset=UTF-8", null)
+        when {
+            url != null -> webView?.loadUrl(url)
+            page != null -> webView?.loadData(page, "text/html; charset=UTF-8", null)
+        }
     }
 
 
     private fun setupWebView(root: View) {
         webView = root.findViewById(R.id.webView)
         val progressBar = root.findViewById<ProgressBar>(R.id.progressBar)
-        webView?.webViewClient = object: WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                super.onPageFinished(view, url)
-                Logger.d(LOG_TAG, "onPageFinished. url=$url")
-                val urlArr = url.split('?')
-                val endpoint = urlArr[0]
-                if (TextUtils.equals(RequestSignature.MOCK_CALLBACK_PAGE, endpoint)) {
-                    val query = urlArr[1]
-                    val queryArr = query.split('&')
-                    val token = NetUtils.parseQuerySegment(queryArr[0], "oauth_token")
-                    val verifier = NetUtils.parseQuerySegment(queryArr[1], "oauth_verifier")
-                    if (token == null || verifier == null) {
-                        Logger.e(LOG_TAG, "error in url parsing. token or verifier is null")
-                        return
-                    }
-                    listener?.processUserRegistered(token, verifier)
-                    activity?.onBackPressed()
-                }
+
+        webView?.webViewClient = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) object: WebViewClient() {
+            @TargetApi(Build.VERSION_CODES.M)
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                Logger.d(LOG_TAG, "WebViewLog. shouldOverrideUrlLoading 6.0+")
+                processUrl(request?.url?.toString())
+                return super.shouldOverrideUrlLoading(view, request)
+            }
+        } else object: WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                Logger.d(LOG_TAG, "WebViewLog. shouldOverrideUrlLoading 5.1-")
+                processUrl(url)
+                return super.shouldOverrideUrlLoading(view, url)
             }
         }
         webView?.webChromeClient = object: WebChromeClient() {
@@ -85,11 +84,32 @@ class WebPageFragment: Fragment() {
             }
         }
         webView?.settings?.javaScriptEnabled = true
+        webView?.settings?.domStorageEnabled = true
+    }
+
+    private fun processUrl(url: String?) {
+        Logger.d(LOG_TAG, "processUrl. url=$url")
+        val urlArr = url?.split('?') ?: return
+        val endpoint = urlArr[0]
+        if (RequestSignature.MOCK_CALLBACK_PAGE == endpoint || RequestSignature.FLICKR_PAGE == endpoint) {
+            val query = urlArr[1]
+            val queryArr = query.split('&')
+            val token = NetUtils.parseQuerySegment(queryArr[0], "oauth_token")
+            val verifier = NetUtils.parseQuerySegment(queryArr[1], "oauth_verifier")
+            if (token == null || verifier == null) {
+                Logger.e(LOG_TAG, "error in url parsing. token or verifier is null")
+                return
+            }
+            listener?.processUserRegistered(token, verifier)
+            activity?.onBackPressed()
+        } else if (RequestSignature.FLICKR_LOGIN_PAGE == endpoint) {
+            Logger.d(LOG_TAG, "processUrl. showing login page")
+        }
     }
 
 
     interface Listener {
-        fun processUserRegistered(token: String, verifier: String)
+        fun processUserRegistered(token: String, verifier: String): Unit?
     }
 
 

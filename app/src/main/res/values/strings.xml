@@ -1,11 +1,19 @@
 <resources>
-    <string name="app_name">FlickrClient</string>
-    <string name="search_query">Поисковой запрос</string>
-    <string name="no_images">Нет изображений</string>
-    <string name="now_you_are_authorized">Теперь вы авторизованы и можете начать пользоваться приложением!\nВведите поисковой запрос.</string>
-    <string name="image_in_list">Картинка в списке</string>
-    <string name="selected_image">Выбранная картинка</string>
-    <string name="open_db">Открыть БД</string>
-    <string name="authorize">Пройти авторизацию</string>
-    <string name="no_images_found">Не найдено подходящих изображений</string>
+    <string name="app_name" translatable="false">FlickrClient</string>
+    <string name="image_url_path_formatter" formatted="false" translatable="false">https://farm%s.static.flickr.com/%s/%s_%s.jpg</string>
+
+    <string name="search_query">Search query</string>
+    <string name="no_images">No images</string>
+    <string name="now_you_are_authorized">Now you are authorized and can use this app!\nEnter search query.</string>
+    <string name="image_in_list">Image in list</string>
+    <string name="selected_image">Selected image</string>
+    <string name="open_db">Open DB</string>
+    <string name="authorize">Authorize</string>
+    <string name="no_images_found">No images found</string>
+
+    <string name="internal_server_error">Sorry, it seems like we have backend error. Try again later</string>
+    <string name="flickr_api_unavailable">Sorry, it seems like Flickr search is currently unavailable. Try again later</string>
+    <string name="signature_invalid">Request signature is incorrect</string>
+    <string name="you_seem_to_be_offline">Seems like you lost internet connectivity. Try again later</string>
+    <string name="encoding_not_supported">Your device doesn\'t support needed encoding.</string>
 </resources>

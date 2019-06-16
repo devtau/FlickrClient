@@ -10,8 +10,8 @@ import android.database.MatrixCursor
 import android.database.SQLException
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -30,11 +30,13 @@ import android.widget.TableRow
 import android.widget.TableRow.LayoutParams
 import android.widget.TextView
 import android.widget.Toast
-import com.devtau.database.SQLHelper
+import com.devtau.flickrclient.db.SQLHelper
 import com.devtau.flickrclient.BuildConfig
 import com.devtau.flickrclient.R
-import com.devtau.rest.util.Logger
-
+import com.devtau.flickrclient.util.Logger
+/**
+ * см DBInspector
+ */
 @Suppress("NAME_SHADOWING", "SetTextI18n", "ResourceType")
 class DBViewerActivity: AppCompatActivity() {
 
